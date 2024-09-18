@@ -6,7 +6,7 @@
 ### Minimum Exiled Version: 8.9.8
 
 ```yaml
-LifeForMoreStamina:
+SCP1853Buff:
   is_enabled: true
   debug: false
   stamina_added: 0.0599999987
