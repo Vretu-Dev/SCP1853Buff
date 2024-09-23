@@ -9,5 +9,6 @@ namespace SCP1853Buff
         public float StaminaAdded { get; set; } = 0.060f;
         public float StaminaThreshold { get; set; } = 0.025f;
         public float HpRemoved { get; set; } = 0.5f;
+        public byte MovementBoostIntensity { get; set; } = 5;
     }
 }
