@@ -9,7 +9,16 @@
 SCP1853Buff:
   is_enabled: true
   debug: false
+  # How much stamina does the player receive when it runs out?
   stamina_added: 0.0599999987
+  # Stamina level at which it starts to regenerate.
   stamina_threshold: 0.0250000004
+  # How much health is deducted?
   hp_removed: 0.5
+  # Effect intensity.
+  movement_boost_intensity: 10
+  # Recommended to set to true; this ignores receiving effects from other plugins or items.
+  ignore_another_movement_boost: true
+  # Apply Bleeding Effect (Visual Only)
+  enable_visual_effect: false
 ```
