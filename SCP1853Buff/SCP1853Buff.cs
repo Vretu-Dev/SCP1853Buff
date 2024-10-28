@@ -14,7 +14,7 @@ namespace SCP1853Buff
         public override string Name => "SCP1853Buff";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "SCP1853Buff";
-        public override Version Version => new Version(1, 0, 1);
+        public override Version Version => new Version(1, 1, 0);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
 
         private Timer staminaCheckTimer;
@@ -24,6 +24,7 @@ namespace SCP1853Buff
             Exiled.Events.Handlers.Server.RoundStarted += OnRoundStarted;
             Exiled.Events.Handlers.Server.RestartingRound += OnRestartingRound;
             Exiled.Events.Handlers.Player.ReceivingEffect += OnReceivingEffect;
+            Exiled.Events.Handlers.Player.Hurting += OnHurting;
             playersWithEffect = new HashSet<Player>();
             base.OnEnabled();
         }
@@ -32,6 +33,7 @@ namespace SCP1853Buff
             Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStarted;
             Exiled.Events.Handlers.Server.RestartingRound -= OnRestartingRound;
             Exiled.Events.Handlers.Player.ReceivingEffect -= OnReceivingEffect;
+            Exiled.Events.Handlers.Player.Hurting -= OnHurting;
             base.OnDisabled();
         }
         private void OnRoundStarted()
@@ -52,38 +54,55 @@ namespace SCP1853Buff
         {
             if (ev.Effect.GetEffectType() == EffectType.Scp1853)
             {
-                if (ev.Intensity > 0) // Add player, if effect is active
+                if (ev.Intensity > 0)
                 {
                     ev.Player.EnableEffect(EffectType.MovementBoost, Config.MovementBoostIntensity);
+                    if (Config.EnableVisualEffect)
+                    {
+                        ev.Player.EnableEffect(EffectType.Bleeding, 1);
+                    }
                     playersWithEffect.Add(ev.Player);
                 }
-                else // Remove Player, if effect is removed
+                else
                 {
                     playersWithEffect.Remove(ev.Player);
                     ev.Player.DisableEffect(EffectType.MovementBoost);
+                    if (Config.EnableVisualEffect)
+                    {
+                        ev.Player.DisableEffect(EffectType.Bleeding);
+                    }
                 }
             }
-            else if (playersWithEffect.Contains(ev.Player) && ev.Effect.GetEffectType() == EffectType.MovementBoost)
+            else if (Config.IgnoreAnotherMovementBoost)
             {
-                // Jeśli gracz ma efekt SCP-1853, zablokuj inne efekty ruchu
-                ev.IsAllowed = false; // Zablokowanie efektu ruchu z innego pluginu
+                if (playersWithEffect.Contains(ev.Player) && ev.Effect.GetEffectType() == EffectType.MovementBoost)
+                {
+                    ev.IsAllowed = false;
+                }
             }
         }
         private void OnStaminaCheck(object sender, ElapsedEventArgs e)
         {
-            // Iteration by players with SCP-1853 effect
             foreach (var player in playersWithEffect.ToList())
             {
                 if (player.Stamina <= Config.StaminaThreshold)
                 {
-                    // Set Stamina to a new value, but only if it makes sense to do so
                     player.Stamina = Math.Max(player.Stamina, Config.StaminaAdded);
 
-                    // Add health only when stamina is updated
                     if (player.Stamina == Config.StaminaAdded)
                     {
                         player.Health -= Config.HpRemoved;
                     }
+                }
+            }
+        }
+        private void OnHurting(HurtingEventArgs ev)
+        {
+            if (Config.EnableVisualEffect)
+            {
+                if (ev.DamageHandler.Type == DamageType.Bleeding)
+                {
+                    ev.IsAllowed = false;
                 }
             }
         }
