@@ -87,11 +87,11 @@ namespace SCP1853Buff
 
                         if (Config.VisualEffect)
                         {
-                            player.EnableEffect(EffectType.Bleeding, 1, 1);
+                            player.EnableEffect(EffectType.Bleeding, 1, 2);
                         }
-                        if (Config.KillOnZeroHp && player.Health < 0.8)
+                        if (!Config.VisualEffect && Config.KillOnZeroHp && player.Health < 0.8)
                         {
-                            player.EnableEffect(EffectType.Bleeding, 1, 1);
+                            player.EnableEffect(EffectType.Bleeding, 1, 2);
                         }
                     }
                 }
@@ -99,15 +99,15 @@ namespace SCP1853Buff
         }
         private void OnHurting(HurtingEventArgs ev)
         {
-            if (Config.VisualEffect)
+            if (ev.DamageHandler.Type == DamageType.Bleeding)
             {
-                if (ev.DamageHandler.Type == DamageType.Bleeding)
+                if (Config.VisualEffect)
                 {
                     ev.IsAllowed = false;
-                    if (Config.KillOnZeroHp && ev.Player.Health < 0.8)
-                    {
-                        ev.IsAllowed = true;
-                    }
+                }
+                if (Config.KillOnZeroHp && ev.Player.Health < 0.8)
+                {
+                    ev.IsAllowed = true;
                 }
             }
         }
