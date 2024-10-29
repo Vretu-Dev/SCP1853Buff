@@ -17,8 +17,10 @@ SCP1853Buff:
   hp_removed: 0.5
   # Effect intensity.
   movement_boost_intensity: 10
+  # Kills the player when their HP reaches zero.
+  kill_on_zero_hp: true
+  # Apply Bleeding Effect when HP is depleting (Visual Only)
+  visual_effect: true
   # Recommended to set to true; this ignores receiving effects from other plugins or items.
   ignore_another_movement_boost: true
-  # Apply Bleeding Effect (Visual Only)
-  enable_visual_effect: false
 ```
