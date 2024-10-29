@@ -84,7 +84,12 @@ namespace SCP1853Buff
                     if (player.Stamina == Config.StaminaAdded)
                     {
                         player.Health -= Config.HpRemoved;
+
                         if (Config.VisualEffect)
+                        {
+                            player.EnableEffect(EffectType.Bleeding, 1, 1);
+                        }
+                        if (Config.KillOnZeroHp && player.Health < 0.8)
                         {
                             player.EnableEffect(EffectType.Bleeding, 1, 1);
                         }
