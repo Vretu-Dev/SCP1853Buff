@@ -84,7 +84,7 @@ namespace SCP1853Buff
                     if (player.Stamina == Config.StaminaAdded)
                     {
                         player.Health -= Config.HpRemoved;
-                        if (Config.EnableVisualEffect)
+                        if (Config.VisualEffect)
                         {
                             player.EnableEffect(EffectType.Bleeding, 1, 1);
                         }
@@ -94,11 +94,15 @@ namespace SCP1853Buff
         }
         private void OnHurting(HurtingEventArgs ev)
         {
-            if (Config.EnableVisualEffect)
+            if (Config.VisualEffect)
             {
                 if (ev.DamageHandler.Type == DamageType.Bleeding)
                 {
                     ev.IsAllowed = false;
+                    if (Config.KillOnZeroHp && ev.Player.Health < 0.8)
+                    {
+                        ev.IsAllowed = true;
+                    }
                 }
             }
         }

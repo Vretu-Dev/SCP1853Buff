@@ -15,9 +15,11 @@ namespace SCP1853Buff
         public float HpRemoved { get; set; } = 0.5f;
         [Description("Effect intensity.")]
         public byte MovementBoostIntensity { get; set; } = 10;
+        [Description("Kills the player when their HP reaches zero.")]
+        public bool KillOnZeroHp { get; set; } = true;
+        [Description("Apply Bleeding Effect when HP is depleting (Visual Only)")]
+        public bool VisualEffect { get; set; } = true;
         [Description("Recommended to set to true; this ignores receiving effects from other plugins or items.")]
         public bool IgnoreAnotherMovementBoost { get; set; } = true;
-        [Description("Apply Bleeding Effect (Visual Only)")]
-        public bool EnableVisualEffect { get; set; } = false;
     }
 }
