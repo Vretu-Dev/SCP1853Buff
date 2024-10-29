@@ -14,7 +14,7 @@ namespace SCP1853Buff
         public override string Name => "SCP1853Buff";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "SCP1853Buff";
-        public override Version Version => new Version(1, 1, 1);
+        public override Version Version => new Version(1, 1, 2);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
 
         private Timer staminaCheckTimer;
